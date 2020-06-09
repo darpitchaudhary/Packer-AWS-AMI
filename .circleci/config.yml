@@ -40,4 +40,4 @@ jobs:
 workflows:
     build_deploy:
       jobs:
-        - build:
+        - build
