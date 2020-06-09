@@ -1,0 +1,40 @@
+{
+    "variables": {
+      "aws_access_key": "",
+      "aws_secret_key": "",
+      "aws_region": "",
+      "subnet_id": "",
+      "source_ami": "ami-068663a3c619dd892",
+      "ssh_username": "ubuntu",
+      "ami_users": "269405965956,746570542146"	 
+    },
+    "builders": [{
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami": "{{user `source_ami`}}",
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "csye6225_su20{{timestamp}}",
+      "ami_users": "{{user `ami_users`}}",
+      "ami_description": "Ubuntu AMI for su20",
+      "launch_block_device_mappings": [{
+        "device_name": "/dev/sda1",
+        "volume_size": 8,
+        "volume_type": "gp2",
+        "delete_on_termination": true
+      }]
+    }],
+    "provisioners": [{
+        "type": "shell",
+        "inline": [
+          "sudo apt-get update -y",
+          "sudo apt-get install curl",
+          "curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -",
+          "sudo apt-get install -y nodejs",
+          "sudo apt-get install -y unzip"
+        ]}
+    ]
+
+}

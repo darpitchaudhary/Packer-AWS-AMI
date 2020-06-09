@@ -1,0 +1,38 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6-jessie
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Extraction Dependencies
+          command: |
+            sudo apt-get update && sudo apt-get install wget zip unzip
+      - run:
+          name: Environment Setup
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+      - run:
+          name: AWS-CLI
+          command: sudo pip install awscli
+
+      - run:
+          name: Installing Packer 
+          command: |
+            wget -q https://releases.hashicorp.com/packer/1.5.6/packer_1.5.6_linux_amd64.zip
+            unzip packer*.zip
+            chmod +x packer
+      - run:
+          name: Validate AMI
+          command: |
+            ./packer validate ami.json
+      - run:
+          name: Build AMI
+          command: |
+            ./packer build ami.json
