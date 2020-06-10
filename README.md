@@ -1,3 +1,3 @@
 # ami
 Installation Instructions:
-1)
+1) packer validate ami.json
