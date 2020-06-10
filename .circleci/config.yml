@@ -41,7 +41,7 @@ workflows:
     pr_check_workflow:
       jobs:
         - pr_check:
-          filters:
+            filters:
               branches:
                 only:
                   - /^pull\/.*$/
