@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build:
+  pr_check:
     docker:
       - image: circleci/python:3.6-jessie
 
@@ -38,9 +38,9 @@ jobs:
             ./packer build ami.json
 
 workflows:
-    build_deploy:
+    pr_check_workflow:
       jobs:
-        - build:
+        - pr_check:
           filters:
               branches:
                 only:
