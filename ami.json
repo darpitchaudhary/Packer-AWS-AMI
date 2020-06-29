@@ -3,7 +3,7 @@
       "aws_access_key": "",
       "aws_secret_key": "",
       "aws_region": "",
-      "source_ami": "ami-068663a3c619dd892",
+      "source_ami": "ami-00e7c824923988f3f",
       "ssh_username": "ubuntu",
       "ami_users": "269405965956,746570542146"	 
     },
@@ -17,7 +17,7 @@
       "ssh_username": "{{user `ssh_username`}}",
       "ami_name": "csye6225_a4{{timestamp}}",
       "ami_users": "{{user `ami_users`}}",
-      "ami_description": "Ubuntu AMI for assignment 4",
+      "ami_description": "Ubuntu AMI with code deploy for assignment 6",
       "launch_block_device_mappings": [{
         "device_name": "/dev/sda1",
         "volume_size": 8,
@@ -28,11 +28,25 @@
     "provisioners": [{
         "type": "shell",
         "inline": [
+          "sudo rm /var/lib/apt/lists/lock",
+          "sudo rm /var/cache/apt/archives/lock",
+				  "sudo rm /var/lib/dpkg/lock-frontend",
+				  "sudo dpkg --configure -a",
+				  "sudo apt install -f",
           "sudo apt-get update -y",
-          "sudo apt-get install curl",
+          "sudo apt-get install curl -y",
           "curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -",
           "sudo apt-get install -y nodejs",
-          "sudo apt-get install -y unzip"
+          "sudo apt-get install -y unzip",
+          "sudo apt-get -y install wget",
+          "sudo npm install pm2 -g",
+          "sudo apt-get install ruby -y",
+          "cd /home/ubuntu",
+          "wget https://aws-codedeploy-us-east-1.s3.us-east-1.amazonaws.com/latest/install",
+          "chmod +x ./install",
+          "sudo ./install auto",
+          "sudo service codedeploy-agent start",
+          "sudo service codedeploy-agent status"
         ]}
     ]
 
